@@ -19,13 +19,13 @@ topology:
     spine1:
       image: quay.io/frrouting/frr:9.1.0
       binds:
-        - config/spine1:/etc/frr
+        - configs/fabric/spine1:/etc/frr
       mgmt-ipv4: 172.80.80.21
       group: spine
     spine2:
       image: quay.io/frrouting/frr:9.1.0
       binds:
-        - config/spine2:/etc/frr
+        - configs/fabric/spine2:/etc/frr
       mgmt-ipv4: 172.80.80.22
       group: spine
 
@@ -33,19 +33,19 @@ topology:
     leaf1:
       image: quay.io/frrouting/frr:9.1.0
       binds:
-        - config/leaf1:/etc/frr
+        - configs/fabric/leaf1:/etc/frr
       mgmt-ipv4: 172.80.80.11
       group: leaf
     leaf2:
       image: quay.io/frrouting/frr:9.1.0
       binds:
-        - config/leaf2:/etc/frr
+        - configs/fabric/leaf2:/etc/frr
       mgmt-ipv4: 172.80.80.12
       group: leaf
     leaf3:
       image: quay.io/frrouting/frr:9.1.0
       binds:
-        - config/leaf3:/etc/frr
+        - configs/fabric/leaf3:/etc/frr
       mgmt-ipv4: 172.80.80.13
       group: leaf
 
