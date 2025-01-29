@@ -1,8 +1,5 @@
-# Copyright 2020 Nokia
-# Licensed under the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
 
-name: st # short for streaming telemetry ;)
+name: st_frr # short for streaming telemetry ;)
 prefix: ""
 
 mgmt:
@@ -11,39 +8,44 @@ mgmt:
 
 topology:
   defaults:
-    kind: nokia_srlinux
-
+    kind: linux
+    
   kinds:
-    nokia_srlinux:
-      image: ghcr.io/nokia/srlinux:24.10.1
-      type: ixrd2l
     linux:
       image: ghcr.io/srl-labs/network-multitool
 
   nodes:
     ### SPINES ###
     spine1:
-      type: ixrd3l
-      group: spine
-      startup-config: configs/fabric/spine1.cfg
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - config/spine1:/etc/frr
       mgmt-ipv4: 172.80.80.21
-    spine2:
-      type: ixrd3l
       group: spine
-      startup-config: configs/fabric/spine2.cfg
+    spine2:
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - config/spine2:/etc/frr
       mgmt-ipv4: 172.80.80.22
+      group: spine
 
     ### LEAFS ###
     leaf1:
-      startup-config: configs/fabric/leaf1.cfg
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - config/leaf1:/etc/frr
       mgmt-ipv4: 172.80.80.11
       group: leaf
     leaf2:
-      startup-config: configs/fabric/leaf2.cfg
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - config/leaf2:/etc/frr
       mgmt-ipv4: 172.80.80.12
       group: leaf
     leaf3:
-      startup-config: configs/fabric/leaf3.cfg
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - config/leaf3:/etc/frr
       mgmt-ipv4: 172.80.80.13
       group: leaf
 
@@ -140,12 +142,12 @@ topology:
         - 3100:3100
 
   links:
-    - endpoints: ["spine1:e1-1", "leaf1:e1-49"]
-    - endpoints: ["spine1:e1-2", "leaf2:e1-49"]
-    - endpoints: ["spine1:e1-3", "leaf3:e1-49"]
-    - endpoints: ["spine2:e1-1", "leaf1:e1-50"]
-    - endpoints: ["spine2:e1-2", "leaf2:e1-50"]
-    - endpoints: ["spine2:e1-3", "leaf3:e1-50"]
-    - endpoints: ["leaf1:e1-1", "client1:eth1"]
-    - endpoints: ["leaf2:e1-1", "client2:eth1"]
-    - endpoints: ["leaf3:e1-1", "client3:eth1"]
+    - endpoints: ["spine1:eth1", "leaf1:eth1"]
+    - endpoints: ["spine1:eth2", "leaf2:eth1"]
+    - endpoints: ["spine1:eth3", "leaf3:eth1"]
+    - endpoints: ["spine2:eth1", "leaf1:eth2"]
+    - endpoints: ["spine2:eth2", "leaf2:eth2"]
+    - endpoints: ["spine2:eth3", "leaf3:eth2"]
+    - endpoints: ["leaf1:eth3", "client1:eth1"]
+    - endpoints: ["leaf2:eth3", "client2:eth1"]
+    - endpoints: ["leaf3:eth3", "client3:eth1"]
